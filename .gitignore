@@ -1,0 +1,142 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+# If using Poetry:
+.poetry/
+
+# Conda environments
+.conda/
+*.conda
+*.ipynb_checkpoints
+
+# Virtualenv folders
+env/
+venv/
+venv.bak/
+
+# Install files
+*.egg
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+*.cover
+*.py,cover
+coverage.xml
+*.lcov
+
+# mypy static analysis
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre static analysis
+.pyre/
+
+# pylint
+pylint.log
+
+# Pyright static analysis
+.pyright/
+
+# Pytest
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Cache files
+*.log
+*.pot
+*.mo
+*.msg
+*.crt
+*.pem
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyInstaller
+# Usually these files are written by a Python script from a template
+# before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Thumbnails
+*.thumbnail_cache
+
+# Packaging directories
+*.whl
+*.lock
+*.eggs
+MANIFEST
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*~
+
+# MacOS
+.DS_Store
+
+# Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# VS Code:
+.vscode/
+
+# Poetry specific files:
+poetry.lock
+.pdm.lock
+
+# Pyenv
+.python-version
+
+# IPython profile
+.ipython/
+
+# dotenv files
+.env
+.env.*.local
+
+# Jupyter Notebook metadata
+*.nb.py
+
