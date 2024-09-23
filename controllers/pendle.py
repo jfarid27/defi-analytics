@@ -52,7 +52,7 @@ async def extract_fourth_column(row):
         return "N/A"
 
 # Function to capture all rows (<tr> elements) and process each column
-async def capture_rows(page, debug=True):
+async def capture_rows(page, platform: str, debug=True):
     """
     Asynchronously captures rows from a table on a web page.
     Args:
@@ -62,6 +62,7 @@ async def capture_rows(page, debug=True):
         list: A list of dictionaries, each containing data from a row in the table. The dictionary keys are:
             - "ticker": The value from the first column.
             - "close": The value from the second column.
+            - "platform": The platform type of the rows.
             - "liquidity": The value from the third column.
             - "apy": The value from the fourth column.
     """
@@ -84,6 +85,7 @@ async def capture_rows(page, debug=True):
         cells["close"] = await extract_second_column(row)
         cells["liquidity"] = await extract_third_column(row)
         cells["apy"] = await extract_fourth_column(row)
+        cells["platform"] = platform
         
         if cells:
             data.append(cells)
@@ -91,7 +93,7 @@ async def capture_rows(page, debug=True):
     return data
 
 # Main function to gather data from the table
-async def get_table_data(page, url: str, debug=True) -> pd.DataFrame:
+async def get_table_data(page, url: str, debug=False) -> pd.DataFrame:
     """
     Fetches table data from a specified URL and returns it as a pandas DataFrame.
 
@@ -117,9 +119,17 @@ async def get_table_data(page, url: str, debug=True) -> pd.DataFrame:
     await button.click()
 
     # Capture rows and process columns
-    all_data = await capture_rows(page, debug=debug)
+    all_data = await capture_rows(page, platform="Ethereum", debug=debug)
+
+    print("swap network manually now")
+
+    await asyncio.sleep(10)
+
+    all_data_2 = await capture_rows(page, platform="Arbitrum", debug=debug)
+    all_data  += all_data_2
+
     # Create a pandas DataFrame from the extracted data
-    df = pd.DataFrame(all_data, columns=["ticker", "close", "liquidity", "apy"])
+    df = pd.DataFrame(all_data, columns=["ticker", "close", "liquidity", "platform", "apy"])
     return df
 
 # Function to run the scraper with asyncio and async_playwright
@@ -133,12 +143,25 @@ async def main():
         url = "https://app.pendle.finance/trade/markets"
 
         # Call the function with the page object
-        df = await get_table_data(page, url, debug=True)
-        
+        df = await get_table_data(page, url, debug=False)
+
         # Close the browser
         await browser.close()
+        conditions = ['sUSDe', 'sUSDe (Karak)', 'apxETH', 'uniBTC (Corn)',
+                    'USD0++', 'pufETH', 'rsETH', 'aUSDT', 'dUSDC', 'gDAI', 
+                    'gUSDC']
+        # Create a list to store filtered dataframes
+        filtered_dfs = []
 
-        print(df.head())
+        # Iterate over the conditions and filter the dataframe
+        for condition in conditions:
+            query_str = f"ticker == '{condition}'"
+            filtered_df = df.query(query_str)
+            filtered_dfs.append(filtered_df)
+
+        final_filtered_df = pd.concat(filtered_dfs)
+
+        print(final_filtered_df)
 
 if __name__ == "__main__":
     asyncio.run(main())
