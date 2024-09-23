@@ -133,7 +133,7 @@ async def main():
         page = await browser.new_page()
 
         # URL of the page
-        url = "https://defillama.com/yields?token=DAI&token=USDC&token=USDT&token=FRAX&token=GHO&token=OHM&chain=Ethereum&chain=Arbitrum&category=Lending&category=Algo-Stables"
+        url = "https://defillama.com/yields?token=DAI&token=USDC&token=USDT&token=FRAX&token=GHO&token=OHM&category=Lending&category=Algo-Stables"
 
         # Call the function with the page object
         df = await get_table_data(page, url, debug=True)
