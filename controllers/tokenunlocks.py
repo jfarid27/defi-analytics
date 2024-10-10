@@ -93,6 +93,8 @@ async def main():
         browser = await p.firefox.launch(headless=False)
         url_slugs = ["balancer", "pendle", "worldcoin-wld"]
         page = await browser.new_page()
+        page.goto("https://token.unlocks.app/")
+        await asyncio.sleep(10) # wait for login credentials
         all_dfs = []
 
         for slug in url_slugs:
