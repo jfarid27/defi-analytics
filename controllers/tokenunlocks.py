@@ -2,6 +2,8 @@ import asyncio
 from playwright.async_api import async_playwright
 import pandas as pd
 
+LOGIN_WAIT_TIME = 10
+
 async def extract_first_column(page):
     """Extracts Total Locked Tokens from page."""
     try:
@@ -83,7 +85,7 @@ async def get_page_data(page, url_slug: str) -> pd.DataFrame:
     base_url = "https://token.unlocks.app/"
     url = f"{base_url}{url_slug}"
     await page.goto(url)
-    await asyncio.sleep(5)
+    await asyncio.sleep(3)
     row_data = await capture_data(page, url_slug)
     df = pd.DataFrame([row_data])
     return df
@@ -93,8 +95,8 @@ async def main():
         browser = await p.firefox.launch(headless=False)
         url_slugs = ["balancer", "pendle", "worldcoin-wld"]
         page = await browser.new_page()
-        page.goto("https://token.unlocks.app/")
-        await asyncio.sleep(10) # wait for login credentials
+        await page.goto("https://token.unlocks.app/")
+        await asyncio.sleep(LOGIN_WAIT_TIME) # wait for login credentials NOTE: LOGIN CREDENTIALS ARE REQUIRED
         all_dfs = []
 
         for slug in url_slugs:
